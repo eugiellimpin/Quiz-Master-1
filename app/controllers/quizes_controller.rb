@@ -3,31 +3,43 @@ class QuizesController < ApplicationController
   skip_before_filter  :verify_authenticity_token
 
   def index
-    render json: {'quizes': Quiz.all}
+    @quizes = Quiz.all
+    render component: 'Quizes', props: { quizes: @quizes }
   end
 
   def create
-    quiz = Quiz.create(question: quiz_params[:question],
-                       answer: quiz_params[:answer])
-
-    render json: {'quiz': quiz}
+    @quiz = Quiz.new(quiz_params)
+    respond_to do |format|
+      format.json do
+        if @quiz.save
+          render json: @quiz
+        else
+          render json: {errors: @quiz.errors.messages}, status: 422
+        end
+      end
+    end
   end
 
   def update
-    quiz = Quiz.find(params[:id])
-    quiz.update(question: quiz_params[:question],
-                answer: quiz_params[:answer])
-
-    render json: {'quiz': quiz}
+    @quiz = Quiz.find(params[:id])
+    respond_to do |format|
+      format.json do
+        if @quiz.update(quiz_params)
+          render json: @quiz
+        else
+          render json: {errors: @quiz.errors.messages}, status: 422
+        end
+      end
+    end
   end
 
   def destroy
     quiz = Quiz.find(params[:id])
     quiz.destroy
-
-    render json: {'quizes': Quiz.all}
+    respond_to do |format|
+      format.json { render :json => {}, :status => :no_content }
+    end
   end
-
 
   private
   def quiz_params
