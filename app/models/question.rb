@@ -12,6 +12,10 @@ class Question < ActiveRecord::Base
   end
 
   def self.number_to_words answer
+    if answer.nil? or answer.blank?
+      return false
+    end
+
     arr = answer.split(' ')
     number_pattern = /\A[-+]?[0-9]+\z/
     words = []
