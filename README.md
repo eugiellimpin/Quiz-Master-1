@@ -16,6 +16,16 @@ A simple API service for quiz master app using Rails 4.2.
 
 - the shoule be accessible in http://localhost:3000
 
+## Running tests
+
+Run api tests:
+
+`rspec -fd spec/api/`
+
+Run model tests:
+
+`rspec -fd spec/model/`
+
 ## Third Party Gems
 - [pg](https://bitbucket.org/ged/ruby-pg/wiki/Home)
 - [rack-cors](https://github.com/cyu/rack-cors)
