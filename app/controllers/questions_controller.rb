@@ -28,8 +28,9 @@ class QuestionsController < ApplicationController
   def answer
     question = Question.find(params[:id])
     answer = quiz_params[:answer]
+    valid_answer = question.validate_answer(answer)
 
-    if answer == question.answer
+    if valid_answer
       render json: {correct: true } and return
     end
 
